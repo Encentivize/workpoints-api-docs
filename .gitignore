@@ -1,0 +1,15 @@
+.DS_Store
+.idea/
+npm-debug.log
+*.sublime-project
+*.sublime-workspace
+/coverage
+uploads
+~*
+*.orig
+test/data/member-import.xlsx
+test-members.xlsx
+logs/*
+.merge_file_*
+node_modules/bson/builderror.log
+node_modules/bson/builderror.log
