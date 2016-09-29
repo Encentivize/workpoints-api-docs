@@ -3,7 +3,7 @@
 Workpoints uses an OAuth 2.0 server for app integrations, called Neuron. 
 
 
-Your app may access the following routes. Replace {{programName}} with the name of the program that you app is linked to.
+Your app may access the following routes. Replace :programName with the name of the program that you app is linked to.
 
 # Program
 
