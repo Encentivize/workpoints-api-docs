@@ -1,10 +1,7 @@
 # Introduction
 
-Workpoints 
+Workpoints uses an OAuth 2.0 server for app integrations, called Neuron. 
 
-Authentication with neuron-synapse
-install neuron-synapse
-ROUTES
 
 Your app may access the following routes. Replace {{programName}} with the name of the program that you app is linked to.
 
@@ -14,10 +11,10 @@ Your app may access the following routes. Replace {{programName}} with the name 
 
 Returns a program details object with info such a name, description and timezone
 
-method: 
-`GET`
-url: 
-`https://api.encentivize.co.za/api/programs/{{programName}}`
+Verb: GET
+
+url 
+https://api.encentivize.co.za/api/programs/:programName
 
 # Members (People)
 
@@ -25,43 +22,59 @@ url:
 
 Returns an array of members on the program
 
-method GET
-url: 
-`https://api.encentivize.co.za/api/programs/{{programName}}/members`
-query string: any field on the member object, and the following optional parameters that assist with pagination 
+Verb : GET
 
-`skip={{number}}&limit={{number}}`
+Url: 
+https://api.encentivize.co.za/api/programs/:programName/members
+
+Query string: any field on the member object, and the following optional parameters that assist with pagination:
+
+`skip={number}&limit={number}`
 
 
 ## Get a particular member
 
-method: GET
-url: `https://api.encentivize.co.za/api/programs/{{programName}}/members/{{memberId}}`
-parameters:
-`{{memberId}}` : the case-sensitive memberId field from the member object
+Verb: GET
 
-me
-method: GET
-url: https://api.encentivize.co.za/api/programs/{{programName}}/members/me
+Url: https://api.encentivize.co.za/api/programs/:programName/members/:memberId
+
+Parameters:
+memberId : the case-sensitive memberId field from the member object
+
+## Get the current user
+
+Method: GET
+
+Url: https://api.encentivize.co.za/api/programs/:programName/members/me
 
 # Activities
 
-query
+Activities are records of tasks or achievements assigned to programme members. These can be various things, eg. Completing Timesheets, Peer Recognition, Completing a Course, Client Recommendation etc. 
 
-method: GET
-url: https://api.encentivize.co.za/api/programs/{{programName}}/activities
+## Query all activities
+
+Method: GET
+Url:
+https://api.encentivize.co.za/api/programs/:programName/activities
 query: any field on the activity object, and the following optional parameters that assist with pagination { skip: number, limit: number }
 activity
 
-method: GET
-url: https://api.encentivize.co.za/api/programs/{{programName}}/activities/{{activityName}}
-parameters:
-{{activityName}}: case-sensitive name of the activity
-assign
+Method: GET
+Url: https://api.encentivize.co.za/api/programs/:programName/activities/:activityName
+Parameters:
 
-method: POST
-url: https://api.encentivize.co.za/api/programs/{{programName}}/members/{{memberId}}/activities/{{activityName}}
-parameters:
-{{memberId}}: the memberId field of the member who will receive this activity
-{{activityName}}: case-sensitive name of the activity
-body: defined on the schema.properties field of the activity that you wish to assign
+activityName: case-sensitive name of the activity
+
+## Assign an activity
+
+Verb: POST
+
+Url: https://api.encentivize.co.za/api/programs/:programName/members/:memberId/activities/:activityName
+
+Parameters:
+
+memberId: the memberId field of the member who will receive this activity
+
+activityName: case-sensitive name of the activity
+
+POST body: This is activity specific and user configurable. Fields are defined on the schema.properties field of the activity that you wish to assign
