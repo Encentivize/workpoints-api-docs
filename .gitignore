@@ -12,4 +12,3 @@ test-members.xlsx
 logs/*
 .merge_file_*
 node_modules/bson/builderror.log
-node_modules/bson/builderror.log
