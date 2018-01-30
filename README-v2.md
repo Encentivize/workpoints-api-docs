@@ -68,12 +68,10 @@ request(options, function (error, response, body) {
 
 ## Getting Workpoints users
 
-### Searching users
+### Querying users
 
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/members
-```
+```https://api.encentivize.co.za/api/programs/{programName}/members```
 
 method:
 ```GET```
@@ -89,9 +87,7 @@ sort={member field}             // sort results by the given field
 ### Getting a specific user
 
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}
-```
+```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```
 
 method:
 ```GET```
@@ -124,9 +120,7 @@ response example:
 Users are created asynchronously in the background by Workpoints. This means that they won't be immediately available once you make the request to create them. They should be available after 30 seconds of making the request.
 
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/members
-```
+```https://api.encentivize.co.za/api/programs/{programName}/members```
 
 http method:
 ```POST```
@@ -229,9 +223,7 @@ full member schema:
 ## Updating a Workpoints user
 
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}
-```
+```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```
 
 http method:
 ```PUT```
@@ -239,9 +231,7 @@ http method:
 ## Creating an activity
 
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/activities
-```
+```https://api.encentivize.co.za/api/programs/{programName}/activities```
 
 http method:
 ```POST```
@@ -720,11 +710,9 @@ full activity schema:
 
 ## Getting activities
 
-### Searching activities
+### Querying activities
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/activities
-```
+```https://api.encentivize.co.za/api/programs/{programName}/activities```
 
 method:
 ```GET```
@@ -750,9 +738,7 @@ response:
 
 ### Getting a specific activity
 url:
-```
-https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}
-```
+```https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}```
 
 method:
 ```GET```
