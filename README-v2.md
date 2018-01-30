@@ -80,8 +80,8 @@ method:
 
 optional query params:
 ```
-deactivated={boolean}           // only return active activities
-limit={integer}                 // only return 13 activities
+deactivated={boolean}           // used to return active activities
+limit={integer}                 // limit the number of activities returned
 skip={integer}                  // start returning from the first element in the match results
 sort={member field}             // sort results by the given field
 ```
