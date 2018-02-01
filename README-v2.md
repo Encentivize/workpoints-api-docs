@@ -2,9 +2,16 @@
 
 ## Table of Contents
 
-- [Neuron Auth](README-v2.md:10)
-- [User Routes](README-v2.md:76)
-- [Activity Routes](README-v2.md:162)
+- [Neuron Auth](README-v2.md:16)
+- [User Routes](README-v2.md:82)
+    - [Query](README-v2.md:84)
+    - [Create](README-v2.md:131)
+    - [Update](README-v2.md:161)
+- [Activity Routes](README-v2.md:163)
+    - [Query](README-v2.md:226)
+    - [Create](README-v2.md:171)
+    - [Update]()
+    - [Award](README-v2.md:296)
 
 ## Getting a neuron token
 You can either use the [Neuron Synapse SDK](https://github.com/Encentivize/neuron-synapse) or make the API calls directly. The SDK will take care of the token refreshing. Once you get the token simply use it as a Bearer auth token in the request header.
