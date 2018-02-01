@@ -1,0 +1,423 @@
+{
+  "title": "Activity Create",
+  "type": "object",
+  "properties": {
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "awards",
+        "humanResourcesGeneral",
+        "employeeInvolvement",
+        "employeeDevelopment",
+        "employeeServicesHealthAndWellness",
+        "safety",
+        "performance",
+        "drivingGrowth",
+        "corporateSocialResponsibility",
+        "peerRecognition"
+      ]
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+    },
+    "iconUrl": {
+      "type": ["string", "null"]
+    },
+    "schema": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "properties": {
+          "type": "object"
+        },
+        "required": {
+          "type": "array"
+        },
+        "public": {
+          "type": "array"
+        }
+      }
+    },
+    "deactivated": {
+      "type": "boolean"
+    },
+    "restrictions": {
+      "type": "object",
+      "properties": {
+        "acceptTargetDate": {
+          "type": "boolean"
+        },
+        "assigneeLimit": {
+          "type": "object",
+          "properties": {
+            "maximumValue": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "baseUnit": {
+                  "type": "string",
+                  "enum": [
+                    "hours",
+                    "days",
+                    "weeks",
+                    "months",
+                    "quarters",
+                    "years"
+                  ]
+                },
+                "length": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "baseUnit",
+                "length"
+              ]
+            }
+          },
+          "required": [
+            "maximumValue",
+            "period"
+          ]
+        },
+        "assignerLimit": {
+          "type": "object",
+          "properties": {
+            "maximumValue": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "period": {
+              "type": "object",
+              "properties": {
+                "baseUnit": {
+                  "type": "string",
+                  "enum": [
+                    "hours",
+                    "days",
+                    "weeks",
+                    "months",
+                    "quarters",
+                    "years"
+                  ]
+                },
+                "length": {
+                  "type": "integer",
+                  "minimum": 1
+                }
+              },
+              "required": [
+                "baseUnit",
+                "length"
+              ]
+            }
+          },
+          "required": [
+            "maximumValue",
+            "period"
+          ]
+        },
+        "validityPeriod": {
+          "properties": {
+            "start": {
+              "type": "string"
+            },
+            "duration": {
+              "type": "string",
+              "pattern": "^(\\d+y ?)?(\\d+months ?)?(\\d+d ?)?(\\d+h ?)?(\\d+m)?$"
+            }
+          }
+        },
+        "applicableGroups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "assignerGroup": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "assigneeGroup": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "assignerGroup",
+              "assigneeGroup"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "selfAssignment": {
+          "type": "object",
+          "properties": {
+            "allowedGroups": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "allowedGroups"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "acceptTargetDate",
+        "selfAssignment"
+      ]
+    },
+    "actions": {
+      "type": "object",
+      "properties": {
+        "sendComms": {
+          "type": "boolean"
+        },
+        "postToFeed": {
+          "type": "boolean"
+        },
+        "givePoints": {
+          "oneOf": [
+            {
+              "type": "object",
+              "properties": {
+                "lookup": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string"
+                    },
+                    "row": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "assignee",
+                            "assigner",
+                            "activity"
+                          ]
+                        },
+                        "store": {
+                          "type": "string"
+                        },
+                        "field": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "source",
+                        "field"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "column": {
+                      "type": "object",
+                      "properties": {
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "assignee",
+                            "assigner",
+                            "activity"
+                          ]
+                        },
+                        "store": {
+                          "type": "string"
+                        },
+                        "field": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "source",
+                        "field"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "additionalProperties": false,
+                  "required": [
+                    "name",
+                    "row",
+                    "column"
+                  ]
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "lookup"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "activityField": {
+                  "type": "string"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "activityField"
+              ]
+            },
+            {
+              "type": "object",
+              "properties": {
+                "fixed": {
+                  "type": "integer"
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "fixed"
+              ]
+            }
+          ]
+        },
+        "giveBonusPoints": {
+          "type": "object",
+          "properties": {
+            "mode": {
+              "type": "string",
+              "enum": [
+                "rolling",
+                "once-off"
+              ]
+            },
+            "period": {
+              "type": "string",
+              "enum": [
+                "hour",
+                "day",
+                "week",
+                "month",
+                "quarter",
+                "year"
+              ]
+            },
+            "activityCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "points": {
+              "type": "object",
+              "properties": {
+                "fixed": {
+                  "type": "integer",
+                  "minimum": 0
+                }
+              },
+              "additionalProperties": false,
+              "required": [
+                "fixed"
+              ]
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "mode",
+            "period",
+            "activityCount",
+            "points"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "sendComms",
+        "postToFeed"
+      ]
+    },
+    "integrations": {
+      "type": "object",
+      "properties": {
+        "slackIncomingWebhook": {
+          "type": "object",
+          "properties": {
+            "isEnabled": {
+              "type": "boolean"
+            },
+            "url": {
+              "type": ["string", "null"]
+            }
+          },
+          "required": [
+            "isEnabled",
+            "url"
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "slackIncomingWebhook"
+      ]
+    },
+    "webhooks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "title",
+          "url"
+        ]
+      },
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "name",
+    "title",
+    "description",
+    "category",
+    "schema",
+    "restrictions",
+    "integrations",
+    "actions",
+    "deactivated"
+  ],
+  "definitions": {
+    "cron": {
+      "type": "string",
+      "pattern": "^(28|\\*) (2|\\*) (7|\\*) (1|\\*) (1|\\*)$"
+    }
+  }
+}

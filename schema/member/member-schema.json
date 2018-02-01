@@ -1,0 +1,73 @@
+{
+  "title": "Member Create",
+  "type": "object",
+  "properties": {
+    "displayName": {
+      "type": "string"
+    },
+    "primaryMobile": {
+      "type": "string"
+    },
+    "primaryEmail": {
+      "type": "string"
+    },
+    "roles": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "admin"
+        ]
+      },
+      "maxItems": 1
+    },
+    "stores": {
+      "type": "object"
+    },
+    "firstName": {
+      "type": "string"
+    },
+    "surname": {
+      "type": "string"
+    },
+    "employeeNumber": {
+      "type": "string"
+    },
+    "idNumber": {
+      "type": "string"
+    },
+    "jobTitle": {
+      "type": "string"
+    },
+    "birthday": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "engagementDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "terminationDate": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "additionalProperties": false,
+  "required": [
+    "displayName",
+    "primaryEmail",
+    "primaryMobile",
+    "roles",
+    "firstName",
+    "surname"
+  ]
+}

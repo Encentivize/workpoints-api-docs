@@ -1,5 +1,11 @@
 # Workpoints API
 
+## Table of Contents
+
+- [Neuron Auth](README-v2.md:10)
+- [User Routes](README-v2.md:76)
+- [Activity Routes](README-v2.md:162)
+
 ## Getting a neuron token
 You can either use the [Neuron Synapse SDK](https://github.com/Encentivize/neuron-synapse) or make the API calls directly. The SDK will take care of the token refreshing. Once you get the token simply use it as a Bearer auth token in the request header.
 
@@ -66,7 +72,7 @@ request(options, function (error, response, body) {
 });
 ```
 
-## Getting Workpoints users
+## User Routes
 
 ### Querying users
 
@@ -115,7 +121,7 @@ response example:
 }
 ```
 
-## Creating a Workpoints user
+### Creating a Workpoints user
 
 Users are created asynchronously in the background by Workpoints. This means that they won't be immediately available once you make the request to create them. They should be available after 30 seconds of making the request.
 
@@ -143,84 +149,9 @@ request body example:
 }
 ```
 
-full member schema:
-```json
-{
-  "title": "Member Create",
-  "type": "object",
-  "properties": {
-    "displayName": {
-      "type": "string"
-    },
-    "primaryMobile": {
-      "type": "string"
-    },
-    "primaryEmail": {
-      "type": "string"
-    },
-    "roles": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [
-          "admin"
-        ]
-      },
-      "maxItems": 1
-    },
-    "stores": {
-      "type": "object"
-    },
-    "firstName": {
-      "type": "string"
-    },
-    "surname": {
-      "type": "string"
-    },
-    "employeeNumber": {
-      "type": "string"
-    },
-    "idNumber": {
-      "type": "string"
-    },
-    "jobTitle": {
-      "type": "string"
-    },
-    "birthday": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "date-time"
-    },
-    "engagementDate": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "date-time"
-    },
-    "terminationDate": {
-      "type": [
-        "string",
-        "null"
-      ],
-      "format": "date-time"
-    }
-  },
-  "additionalProperties": false,
-  "required": [
-    "displayName",
-    "primaryEmail",
-    "primaryMobile",
-    "roles",
-    "firstName",
-    "surname"
-  ]
-}
-```
+[member schema](schema/member/member-schema.json)
 
-## Updating a Workpoints user
+### Updating a Workpoints user
 
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```
@@ -228,7 +159,9 @@ url:
 http method:
 ```PUT```
 
-## Creating an activity
+## Activity routes
+
+### Creating an activity
 
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/activities```
@@ -281,434 +214,7 @@ request body example:
 }
 ```
 
-full activity schema:
-```json
-{
-  "title": "Activity Create",
-  "type": "object",
-  "properties": {
-    "title": {
-      "type": "string"
-    },
-    "description": {
-      "type": "string"
-    },
-    "category": {
-      "type": "string",
-      "enum": [
-        "awards",
-        "humanResourcesGeneral",
-        "employeeInvolvement",
-        "employeeDevelopment",
-        "employeeServicesHealthAndWellness",
-        "safety",
-        "performance",
-        "drivingGrowth",
-        "corporateSocialResponsibility",
-        "peerRecognition"
-      ]
-    },
-    "name": {
-      "type": "string",
-      "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
-    },
-    "iconUrl": {
-      "type": ["string", "null"]
-    },
-    "schema": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "type": "string"
-        },
-        "title": {
-          "type": "string"
-        },
-        "properties": {
-          "type": "object"
-        },
-        "required": {
-          "type": "array"
-        },
-        "public": {
-          "type": "array"
-        }
-      }
-    },
-    "deactivated": {
-      "type": "boolean"
-    },
-    "restrictions": {
-      "type": "object",
-      "properties": {
-        "acceptTargetDate": {
-          "type": "boolean"
-        },
-        "assigneeLimit": {
-          "type": "object",
-          "properties": {
-            "maximumValue": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "period": {
-              "type": "object",
-              "properties": {
-                "baseUnit": {
-                  "type": "string",
-                  "enum": [
-                    "hours",
-                    "days",
-                    "weeks",
-                    "months",
-                    "quarters",
-                    "years"
-                  ]
-                },
-                "length": {
-                  "type": "integer",
-                  "minimum": 1
-                }
-              },
-              "required": [
-                "baseUnit",
-                "length"
-              ]
-            }
-          },
-          "required": [
-            "maximumValue",
-            "period"
-          ]
-        },
-        "assignerLimit": {
-          "type": "object",
-          "properties": {
-            "maximumValue": {
-              "type": "integer",
-              "minimum": 0
-            },
-            "period": {
-              "type": "object",
-              "properties": {
-                "baseUnit": {
-                  "type": "string",
-                  "enum": [
-                    "hours",
-                    "days",
-                    "weeks",
-                    "months",
-                    "quarters",
-                    "years"
-                  ]
-                },
-                "length": {
-                  "type": "integer",
-                  "minimum": 1
-                }
-              },
-              "required": [
-                "baseUnit",
-                "length"
-              ]
-            }
-          },
-          "required": [
-            "maximumValue",
-            "period"
-          ]
-        },
-        "validityPeriod": {
-          "properties": {
-            "start": {
-              "type": "string"
-            },
-            "duration": {
-              "type": "string",
-              "pattern": "^(\\d+y ?)?(\\d+months ?)?(\\d+d ?)?(\\d+h ?)?(\\d+m)?$"
-            }
-          }
-        },
-        "applicableGroups": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "properties": {
-              "assignerGroup": {
-                "type": [
-                  "string",
-                  "null"
-                ]
-              },
-              "assigneeGroup": {
-                "type": [
-                  "string",
-                  "null"
-                ]
-              }
-            },
-            "required": [
-              "assignerGroup",
-              "assigneeGroup"
-            ],
-            "additionalProperties": false
-          }
-        },
-        "selfAssignment": {
-          "type": "object",
-          "properties": {
-            "allowedGroups": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          "required": [
-            "allowedGroups"
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "acceptTargetDate",
-        "selfAssignment"
-      ]
-    },
-    "actions": {
-      "type": "object",
-      "properties": {
-        "sendComms": {
-          "type": "boolean"
-        },
-        "postToFeed": {
-          "type": "boolean"
-        },
-        "givePoints": {
-          "oneOf": [
-            {
-              "type": "object",
-              "properties": {
-                "lookup": {
-                  "type": "object",
-                  "properties": {
-                    "name": {
-                      "type": "string"
-                    },
-                    "row": {
-                      "type": "object",
-                      "properties": {
-                        "source": {
-                          "type": "string",
-                          "enum": [
-                            "assignee",
-                            "assigner",
-                            "activity"
-                          ]
-                        },
-                        "store": {
-                          "type": "string"
-                        },
-                        "field": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "source",
-                        "field"
-                      ],
-                      "additionalProperties": false
-                    },
-                    "column": {
-                      "type": "object",
-                      "properties": {
-                        "source": {
-                          "type": "string",
-                          "enum": [
-                            "assignee",
-                            "assigner",
-                            "activity"
-                          ]
-                        },
-                        "store": {
-                          "type": "string"
-                        },
-                        "field": {
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "source",
-                        "field"
-                      ],
-                      "additionalProperties": false
-                    }
-                  },
-                  "additionalProperties": false,
-                  "required": [
-                    "name",
-                    "row",
-                    "column"
-                  ]
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "lookup"
-              ]
-            },
-            {
-              "type": "object",
-              "properties": {
-                "activityField": {
-                  "type": "string"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "activityField"
-              ]
-            },
-            {
-              "type": "object",
-              "properties": {
-                "fixed": {
-                  "type": "integer"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "fixed"
-              ]
-            }
-          ]
-        },
-        "giveBonusPoints": {
-          "type": "object",
-          "properties": {
-            "mode": {
-              "type": "string",
-              "enum": [
-                "rolling",
-                "once-off"
-              ]
-            },
-            "period": {
-              "type": "string",
-              "enum": [
-                "hour",
-                "day",
-                "week",
-                "month",
-                "quarter",
-                "year"
-              ]
-            },
-            "activityCount": {
-              "type": "integer",
-              "minimum": 1
-            },
-            "points": {
-              "type": "object",
-              "properties": {
-                "fixed": {
-                  "type": "integer",
-                  "minimum": 0
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "fixed"
-              ]
-            }
-          },
-          "additionalProperties": false,
-          "required": [
-            "mode",
-            "period",
-            "activityCount",
-            "points"
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "sendComms",
-        "postToFeed"
-      ]
-    },
-    "integrations": {
-      "type": "object",
-      "properties": {
-        "slackIncomingWebhook": {
-          "type": "object",
-          "properties": {
-            "isEnabled": {
-              "type": "boolean"
-            },
-            "url": {
-              "type": ["string", "null"]
-            }
-          },
-          "required": [
-            "isEnabled",
-            "url"
-          ]
-        }
-      },
-      "additionalProperties": false,
-      "required": [
-        "slackIncomingWebhook"
-      ]
-    },
-    "webhooks": {
-      "type": "array",
-      "items": {
-        "type": "object",
-        "properties": {
-          "name": {
-            "type": "string",
-            "pattern": "^[a-zA-Z][a-zA-Z0-9]*$"
-          },
-          "title": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string"
-          }
-        },
-        "additionalProperties": false,
-        "required": [
-          "name",
-          "title",
-          "url"
-        ]
-      },
-      "minItems": 1
-    }
-  },
-  "additionalProperties": false,
-  "required": [
-    "name",
-    "title",
-    "description",
-    "category",
-    "schema",
-    "restrictions",
-    "integrations",
-    "actions",
-    "deactivated"
-  ],
-  "definitions": {
-    "cron": {
-      "type": "string",
-      "pattern": "^(28|\\*) (2|\\*) (7|\\*) (1|\\*) (1|\\*)$"
-    }
-  }
-}
-```
-
-## Getting activities
+[activity schema](schema/activity/activity-schema.json)
 
 ### Querying activities
 url:
@@ -779,3 +285,23 @@ response example:
   "canIassign":true
 }
 ```
+
+### Awarding an activity
+
+url:
+```https://api-qa.encentivize.co.za/api/programs/{programName}/members/{memberId}/activities/{activityName}/{targetDate}```
+
+If your activity is setup to accept a target date you can pass one into the request url.
+targetDate is optional.
+
+method: 
+```POST```
+
+request body :
+```json
+{
+  "yearsWithTheTeam": 1
+}
+```
+
+Any custom activity fields that have been created can be filled in in request body.
