@@ -91,6 +91,8 @@ url:
 method:
 ```PUT```
 
+request body: TODO
+
 ### Activating a User
 
 url:
@@ -98,6 +100,8 @@ url:
 
 method:
 ```PUT```
+
+request body: empty
 
 ### Deactivating a User
 
