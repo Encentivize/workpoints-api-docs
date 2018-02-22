@@ -1,5 +1,11 @@
 ## User Routes
 
+- [Query](#querying-users)
+- [Create](#creating-a-user)
+- [Update](#updating-a-user)
+- [Activate](#activating-a-user)
+- [Deactivate](#deactivating-a-user)
+
 ### Querying users
 
 url:
@@ -47,7 +53,7 @@ response example:
 }
 ```
 
-### Creating a Workpoints user
+### Creating a user
 
 Users are created asynchronously in the background by Workpoints. This means that they won't be immediately available once you make the request to create them. They should be available after 30 seconds of making the request.
 
@@ -77,7 +83,7 @@ request body example:
 
 [member schema](../../schema/member/member-create-schema.json)
 
-### Updating a Workpoints user
+### Updating a user
 
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```

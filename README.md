@@ -1,80 +1,244 @@
-# Introduction
+# Workpoints API
 
-Workpoints uses an OAuth 2.0 server for app integrations, called Neuron. 
+## Table of Contents
 
+- [Neuron Auth](#getting-a-neuron-token)
+- [User Routes](docs/user/user-routes.md#user-routes)
+    - [Query](docs/user/user-routes.md#querying-users)
+    - [Create](docs/user/user-routes.md#creating-a-user)
+    - [Update](docs/user/user-routes.md#updating-a-user)
+    - [Activate](docs/user/user-routes.md#activating-a-user)
+    - [Deactivate](docs/user/user-routes.md#deactivating-a-user)
+- [Activity Routes](#activity-routes)
+    - [Query](#querying-activities)
+    - [Create](#creating-an-activity)
+    - [Update](#updating-an-activity)
+    - [Award](#awarding-an-activity)
 
-Your app may access the following routes. Replace :programName with the name of the program that you app is linked to.
+## Getting a neuron token
+You can either use the [Neuron Synapse SDK](https://github.com/Encentivize/neuron-synapse) or make the API calls directly. The SDK will take care of the token refreshing. Once you get the token simply use it as a Bearer auth token in the request header.
 
-# Program
+```javascript
+headers: {
+    Authorization: 'Bearer ' + token
+}
+```
 
-## Get 
+### Neuron Synapse SDK
 
-Returns a program details object with info such a name, description and timezone
+```javascript
+const synapse = require('neuron-synapse');
 
-Verb: GET
+const clientId = 'your-client-name';
+const clientSecret = 'xxxxxxxxxxxxxxxxxxx';
+synapse.initialise({
+    neuronBaseUrl: 'https://neuron.encentivize.co.za/',
+    clientId: clientId,
+    clientSecret: clientSecret
+});
 
-url 
-https://api.encentivize.co.za/api/programs/:programName
+const programName = 'workpoints-program-name';
+synapse.getClientToken({
+        programName: programName,
+        scope: 'pointsRedemption'
+    }, function (err, token) {
+        // err: error object
+        // token: string
+    });
+```
 
-# Members (People)
+### Rest Request
 
-## Query all members
+If you use this method remember that tokens will need to be refreshed every 24 hours.
 
-Returns an array of members on the program
+```javascript
+const request = require('request');
 
-Verb : GET
+const programName = 'workpoints-program-name';
+const url = `https://neuron.encentivize.co.za/${programName}/oauth/token`;
+const clientId = 'your-client-name';
+const clientSecret = 'xxxxxxxxxxxxxxxxxxx';
+const options = {
+    method: 'POST',
+    uri: url,
+    form: {
+        'client_id': clientId,
+        'client_secret': clientSecret,
+        'grant_type': "client_credentials",
+        "scope": 'pointsRedemption'
+    },
+    headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+    },
+    timeout: 30000
+};
 
-Url: 
-https://api.encentivize.co.za/api/programs/:programName/members
+request(options, function (error, response, body) {
+    const token = JSON.parse(body);
+    
+    // token.access_token: string
+    // token.expires_in: number
+});
+```
 
-Query string: any field on the member object, and the following optional parameters that assist with pagination:
+## Activity routes
 
-`skip={number}&limit={number}`
+### Creating an activity
 
+url:
+```https://api.encentivize.co.za/api/programs/{programName}/activities```
 
-## Get a particular member
+method:
+```POST```
 
-Verb: GET
+request schema: [activity](schema/member/member-create-schema.json)
 
-Url: https://api.encentivize.co.za/api/programs/:programName/members/:memberId
+example request body:
+```json
+{
+    "name": "happyBirthday",
+    "title": "Happy Birthday",
+    "description": "Activity used by Birthdays Application",
+    "category": "humanResourcesGeneral",
+    "schema": {
+        "type":"object",
+        "title":"Fields",
+        "properties": {
+            "birthdayMessage": {
+                "title":"Birthday Message",
+                "type":"string"
+            }
+        }
+    },
+    "restrictions": {
+        "acceptTargetDate": false,
+        "applicableGroups": [],
+        "assigneeLimit": {
+            "maximumValue": 1,
+            "period": {
+                "baseUnit": "years",
+                "length": 1
+            }
+        },
+        "selfAssignment" : {
+            "allowedGroups" : []
+        }
+    },
+    "actions": {
+        "postToFeed": true,
+        "sendComms": true
+    },
+    "integrations": {
+        "slackIncomingWebhook": {
+            "isEnabled": false,
+            "url": null
+        }
+    },
+    "deactivated": false  
+}
+```
 
-Parameters:
-memberId : the case-sensitive memberId field from the member object
+[activity schema](schema/activity/activity-schema.json)
 
-## Get the current user
+### Updating an activity
 
-Method: GET
+url:
+```https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}```
 
-Url: https://api.encentivize.co.za/api/programs/:programName/members/me
+method:
+```PUT```
 
-# Activities
+request schema: [activity](schema/activity/activity-schema.json)
 
-Activities are records of tasks or achievements assigned to programme members. These can be various things, eg. Completing Timesheets, Peer Recognition, Completing a Course, Client Recommendation etc. 
+example request body:
 
-## Query all activities
+### Querying activities
+url:
+```https://api.encentivize.co.za/api/programs/{programName}/activities```
 
-Method: GET
-Url:
-https://api.encentivize.co.za/api/programs/:programName/activities
-query: any field on the activity object, and the following optional parameters that assist with pagination { skip: number, limit: number }
-activity
+method:
+```GET```
 
-Method: GET
-Url: https://api.encentivize.co.za/api/programs/:programName/activities/:activityName
-Parameters:
+optional query params:
+```
+deactivated=false       // only return active activities
+limit=13                // only return 13 activities
+skip=0                  // start returning from the first element in the matched results
+sort=title              // sort by title
+```
 
-activityName: case-sensitive name of the activity
+response:
+```json
+{
+  "data": [
+    {activity object},
+    {...},
+    {...}
+  ]
+}
+```
 
-## Assign an activity
+### Getting a specific activity
 
-Verb: POST
+url:
+```https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}```
 
-Url: https://api.encentivize.co.za/api/programs/:programName/members/:memberId/activities/:activityName
+method:
+```GET```
 
-Parameters:
+response example:
+```json
+{
+  "name":"achievement",
+  "title":"Achievement",
+  "description":"Achievement",
+  "schema":{
+    "type":"object",
+    "title":"Fields",
+    "properties":{"motivation":{"title":"Motivation","type":"string"}},
+    "public":["motivation"]
+  },
+  "restrictions":{
+    "applicableGroups":[],
+    "acceptTargetDate":true,
+    "selfAssignment":{"allowedGroups":["adminGroup"]},
+    "assignerLimit":{"maximumValue":10,"period":{"baseUnit":"months","length":1}}
+  },
+  "actions":{
+    "sendComms":true,
+    "postToFeed":true,
+    "giveBonusPoints":{
+      "points":{"fixed":1000},
+      "activityCount":5,
+      "period":"day",
+      "mode":"rolling"
+    },
+    "givePoints":{"fixed":100}
+  },
+  "deactivated":false,
+  "category":"peerRecognition",
+  "integrations":{"slackIncomingWebhook":{"isEnabled":false,"url":"https://hooks.slack.com/services/xxxx/xxxxx/xxxxxx"}},
+  "iconUrl":null,
+  "canIassign":true
+}
+```
 
-memberId: the memberId field of the member who will receive this activity
+### Awarding an activity
 
-activityName: case-sensitive name of the activity
+url:
+```https://api-qa.encentivize.co.za/api/programs/{programName}/members/{memberId}/activities/{activityName}/{targetDate}```
 
-POST body: This is activity specific and user configurable. Fields are defined on the schema.properties field of the activity that you wish to assign
+> If your activity is setup to accept a target date you can pass one into the request url.
+{targetDate} is optional.
+
+method: 
+```POST```
+
+example request body:
+```json
+{
+  "motivation": 1
+}
+```
+
+Any custom activity fields that have been created can be filled in in request body.
