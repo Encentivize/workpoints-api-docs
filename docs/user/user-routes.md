@@ -93,7 +93,7 @@ method:
 
 request body: TODO
 
-### Activating a User
+### Activating a user
 
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}/activate```
@@ -103,7 +103,7 @@ method:
 
 request body: empty
 
-### Deactivating a User
+### Deactivating a user
 
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}/deactivate```
