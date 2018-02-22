@@ -2,16 +2,16 @@
 
 ## Table of Contents
 
-- [Neuron Auth](README-v2.md:16)
-- [User Routes](README-v2.md:82)
-    - [Query](README-v2.md:84)
-    - [Create](README-v2.md:131)
-    - [Update](README-v2.md:161)
-- [Activity Routes](README-v2.md:163)
-    - [Query](README-v2.md:226)
-    - [Create](README-v2.md:171)
-    - [Update]()
-    - [Award](README-v2.md:296)
+- [Neuron Auth](#getting-a-neuron-token)
+- [User Routes](docs/user/user-routes.md#user-routes)
+    - [Query](docs/user/user-routes.md#querying-users)
+    - [Create](docs/user/user-routes.md#creating-a-workpoints-user)
+    - [Update](docs/user/user-routes.md#updating-a-workpoints-user)
+- [Activity Routes](#activity-routes)
+    - [Query](#querying-activities)
+    - [Create](#creating-an-activity)
+    - [Update](#updating-an-activity)
+    - [Award](#awarding-an-activity)
 
 ## Getting a neuron token
 You can either use the [Neuron Synapse SDK](https://github.com/Encentivize/neuron-synapse) or make the API calls directly. The SDK will take care of the token refreshing. Once you get the token simply use it as a Bearer auth token in the request header.
@@ -79,93 +79,6 @@ request(options, function (error, response, body) {
 });
 ```
 
-## User Routes
-
-### Querying users
-
-url:
-```https://api.encentivize.co.za/api/programs/{programName}/members```
-
-method:
-```GET```
-
-optional query params:
-```
-deactivated={boolean}           // used to return active activities
-limit={integer}                 // limit the number of activities returned
-skip={integer}                  // start returning from the first element in the match results
-sort={member field}             // sort results by the given field
-```
-
-### Getting a specific user
-
-url:
-```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```
-
-method:
-```GET```
-
-response example:
-```json
-{
-  "memberId":"1",
-  "displayName":"John",
-  "surname":"Doe",
-  "firstName":"John",
-  "primaryEmail":"john.doe@workpoints.co.za",
-  "primaryMobile":"0830000000",
-  "idNumber":"123456",
-  "employeeNumber":"002",
-  "jobTitle":"Engineer",
-  "birthday":"2000-06-28T00:00:00.000Z",
-  "engagementDate":"2020-12-30T00:00:00.000Z",
-  "terminationDate":"2021-12-21T00:00:00.000Z",
-  "roles":["admin"],
-  "profileImageCode":"mavima",
-  "isDisabled":false,
-  "profilePictureUrl":"https://encentivizev2.blob.core.windows.net/program/profile-1-mavima",
-  "isAdministrator":true
-}
-```
-
-### Creating a Workpoints user
-
-Users are created asynchronously in the background by Workpoints. This means that they won't be immediately available once you make the request to create them. They should be available after 30 seconds of making the request.
-
-url:
-```https://api.encentivize.co.za/api/programs/{programName}/members```
-
-http method:
-```POST```
-
-request body example:
-```json
-{
-    "displayName": "Test User",
-    "firstName": "Test",
-    "surname": "User",
-    "primaryEmail": "test@user.co.za",
-    "primaryMobile": "073000000",
-    "roles": ["admin"], // empty array for non-admin users
-    "jobTitle": "Developer",
-    "idNumber": "4239084597324698",
-    "birthday": "2018-01-29T13:02:20.024Z",
-    "engagementDate": "2018-01-29T13:02:20.024Z",
-    "terminationDate": "2018-01-29T13:02:20.024Z",
-    "stores": {} // leave out if you don't have additional profile fields
-}
-```
-
-[member schema](schema/member/member-schema.json)
-
-### Updating a Workpoints user
-
-url:
-```https://api.encentivize.co.za/api/programs/{programName}/members/{memberId}```
-
-http method:
-```PUT```
-
 ## Activity routes
 
 ### Creating an activity
@@ -173,10 +86,12 @@ http method:
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/activities```
 
-http method:
+method:
 ```POST```
 
-request body example:
+request schema: [activity](schema/member/member-create-schema.json)
+
+example request body:
 ```json
 {
     "name": "happyBirthday",
@@ -223,6 +138,18 @@ request body example:
 
 [activity schema](schema/activity/activity-schema.json)
 
+### Updating an activity
+
+url:
+```https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}```
+
+method:
+```PUT```
+
+request schema: [activity](schema/activity/activity-schema.json)
+
+example request body:
+
 ### Querying activities
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/activities```
@@ -250,6 +177,7 @@ response:
 ```
 
 ### Getting a specific activity
+
 url:
 ```https://api.encentivize.co.za/api/programs/{programName}/activities/{activityName}```
 
@@ -298,16 +226,16 @@ response example:
 url:
 ```https://api-qa.encentivize.co.za/api/programs/{programName}/members/{memberId}/activities/{activityName}/{targetDate}```
 
-If your activity is setup to accept a target date you can pass one into the request url.
-targetDate is optional.
+> If your activity is setup to accept a target date you can pass one into the request url.
+{targetDate} is optional.
 
 method: 
 ```POST```
 
-request body :
+example request body:
 ```json
 {
-  "yearsWithTheTeam": 1
+  "motivation": 1
 }
 ```
 
